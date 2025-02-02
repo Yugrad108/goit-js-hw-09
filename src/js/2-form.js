@@ -1,10 +1,12 @@
-const STORAGE_FORM_KEY = 'form-state';
+const STORAGE_FORM_KEY = 'feedback-form-state';
 const formData = { email: '', message: '' };
 
 const refs = {
   form: document.querySelector('.feedback-form'),
 };
 
+// Когда пользователь вводит данные в форму, 
+// мы получаем эти данные и сохраняем в локальное хранилище
 refs.form.addEventListener('input', e => {
   const email = e.currentTarget.elements.email.value.trim();
   const message = e.currentTarget.elements.message.value.trim();
@@ -13,6 +15,9 @@ refs.form.addEventListener('input', e => {
   saveToLS(STORAGE_FORM_KEY, formData);
 });
 
+// Когда страница загружается, 
+// мы получаем данные из локального хранилища и 
+// заполняем ими форму
 function initPage() {
   const localData = loadFromLS(STORAGE_FORM_KEY);
   if (localData) {
@@ -23,6 +28,11 @@ function initPage() {
 
 initPage();
 
+// Когда пользователь отправляет форму, 
+// мы получаем данные из формы, 
+// сохраняем их в локальное хранилище, 
+// выводим сообщение в консоли, 
+// очищаем форму
 refs.form.addEventListener('submit', e => {
   e.preventDefault();
 
@@ -39,11 +49,13 @@ refs.form.addEventListener('submit', e => {
   e.target.reset();
 });
 
+// Функция для сохранения данных в локальное хранилище
 function saveToLS(key, value) {
   const jsonData = JSON.stringify(value);
   localStorage.setItem(key, jsonData);
 }
 
+// Функция для получения данных из локального хранилища
 function loadFromLS(key) {
   const body = localStorage.getItem(key);
   try {
@@ -53,3 +65,5 @@ function loadFromLS(key) {
     return body;
   }
 }
+
+
