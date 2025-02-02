@@ -68,35 +68,30 @@ const images = [
 ];
 
 
-// Ссылка на контейнер галереи  
-const gallery = document.querySelector('.gallery');  
+const gallery = document.querySelector('.gallery');
 
-// Функция для создания разметки одного элемента галереи  
-function imageTemplate({ preview, original, description }) {  
-  return `<li class="gallery-item">  
-            <a class="gallery-link" href="${original}">  
-              <img   
-                class="gallery-image"   
-                src="${preview}"   
-                alt="${description}"   
-                />  
-            </a>  
-          </li>`;  
-}  
+function imageTemplate({ preview, original, description }) {
+  return `<li class="gallery-item">
+            <a class="gallery-link" href="${original}">
+              <img
+                class="gallery-image"
+                src="${preview}"
+                alt="${description}"
+                />
+            </a>
+          </li>`;
+}
 
-// Функция для создания всей разметки галереи  
-function imagesTemplate(array) {  
-  return array.map(imageTemplate).join('');  
-}  
+function imagesTemplate(array) {
+  return array.map(imageTemplate).join('');
+}
 
-// Генерация разметки галереи с использованием функций  
-const markup = imagesTemplate(images);  
+const markup = imagesTemplate(images);
 
-// Добавляем сгенерированную разметку в контейнер галереи  
-gallery.insertAdjacentHTML('afterbegin', markup);  
+gallery.insertAdjacentHTML('afterbegin', markup);
 
-// Инициализация плагина SimpleLightbox  
-new SimpleLightbox('.gallery a', {  
-  captionsData: 'alt',  
-  captionDelay: 250,  
+new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
 });
+
