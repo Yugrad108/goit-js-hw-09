@@ -1,69 +1,246 @@
-const STORAGE_FORM_KEY = 'feedback-form-state';
-const formData = { email: '', message: '' };
+const STORAGE_FORM_KEY = 'feedback-form-state';  
 
-const refs = {
-  form: document.querySelector('.feedback-form'),
-};
+// Ссылки на элементы формы  
+const refs = {  
+  form: document.querySelector('.feedback-form'),  
+  email: document.querySelector('.feedback-form input[name="email"]'),  
+  message: document.querySelector('.feedback-form textarea[name="message"]'),  
+};  
 
-// Когда пользователь вводит данные в форму, 
-// мы получаем эти данные и сохраняем в локальное хранилище
-refs.form.addEventListener('input', e => {
-  const email = e.currentTarget.elements.email.value.trim();
-  const message = e.currentTarget.elements.message.value.trim();
-  formData.email = email;
-  formData.message = message;
-  saveToLS(STORAGE_FORM_KEY, formData);
-});
+// Инициализация данных из локального хранилища при загрузке страницы  
+(function initPage() {  
+  const savedData = loadFromLS(STORAGE_FORM_KEY);  
+  if (savedData) {  
+    refs.email.value = savedData.email || '';  
+    refs.message.value = savedData.message || '';  
+  }  
+})();  
 
-// Когда страница загружается, 
-// мы получаем данные из локального хранилища и 
-// заполняем ими форму
-function initPage() {
-  const localData = loadFromLS(STORAGE_FORM_KEY);
-  if (localData) {
-    refs.form.elements.email.value = localData.email || '';
-    refs.form.elements.message.value = localData.message || '';
-  }
+// Обработка ввода данных в форме  
+refs.form.addEventListener('input', () => {  
+  const formData = {  
+    email: refs.email.value.trim(),  
+    message: refs.message.value.trim(),  
+  };  
+  saveToLS(STORAGE_FORM_KEY, formData);  
+});  
+
+// Обработка отправки формы  
+refs.form.addEventListener('submit', e => {  
+  e.preventDefault();  
+
+  const formData = {  
+    email: refs.email.value.trim(),  
+    message: refs.message.value.trim(),  
+  };  
+
+  // Проверка заполненности полей  
+  if (!formData.email || !formData.message) {  
+    alert('Fill please all fields');  
+    return;  
+  }  
+
+  console.log(formData);  
+
+  // Очистка локального хранилища и сброс формы  
+  localStorage.removeItem(STORAGE_FORM_KEY);  
+  refs.form.reset();  
+});  
+
+// Функция для сохранения данных в локальное хранилище  
+function saveToLS(key, value) {  
+  localStorage.setItem(key, JSON.stringify(value));  
+}  
+
+// Функция для получения данных из локального хранилища  
+function loadFromLS(key) {  
+  try {  
+    return JSON.parse(localStorage.getItem(key)) || null;  
+  } catch {  
+    return null;  
+  }  
 }
 
-initPage();
 
-// Когда пользователь отправляет форму, 
-// мы получаем данные из формы, 
-// сохраняем их в локальное хранилище, 
-// выводим сообщение в консоли, 
-// очищаем форму
-refs.form.addEventListener('submit', e => {
-  e.preventDefault();
+//********TODO 1-var********/
 
-  if (!formData.email || !formData.message) {
-    alert('Fill please all fields');
-    return;
-  }
-  const email = e.currentTarget.elements.email.value.trim();
-  const message = e.currentTarget.elements.message.value.trim();
-  formData.email = email;
-  formData.message = message;
-  console.log(formData);
-  localStorage.removeItem(STORAGE_FORM_KEY);
-  e.target.reset();
-});
+// const STORAGE_FORM_KEY = 'feedback-form-state';  
 
-// Функция для сохранения данных в локальное хранилище
-function saveToLS(key, value) {
-  const jsonData = JSON.stringify(value);
-  localStorage.setItem(key, jsonData);
-}
+// const form = document.querySelector('.feedback-form');  
 
-// Функция для получения данных из локального хранилища
-function loadFromLS(key) {
-  const body = localStorage.getItem(key);
-  try {
-    const data = JSON.parse(body);
-    return data;
-  } catch {
-    return body;
-  }
-}
+// // Инициализация формы при загрузке  
+// (function initForm() {  
+//   const savedData = loadFromLS(STORAGE_FORM_KEY);  
+//   if (savedData) {  
+//     form.elements.email.value = savedData.email || '';  
+//     form.elements.message.value = savedData.message || '';  
+//   }  
+// })();  
+
+// // Обработка ввода данных  
+// form.addEventListener('input', () => {  
+//   const formData = {  
+//     email: form.elements.email.value.trim(),  
+//     message: form.elements.message.value.trim(),  
+//   };  
+//   saveToLS(STORAGE_FORM_KEY, formData);  
+// });  
+
+// // Обработка отправки формы  
+// form.addEventListener('submit', e => {  
+//   e.preventDefault();  
+
+//   const email = form.elements.email.value.trim();  
+//   const message = form.elements.message.value.trim();  
+
+//   if (!email || !message) {  
+//     alert('Fill please all fields');  
+//     return;  
+//   }  
+
+//   console.log({ email, message });  
+//   localStorage.removeItem(STORAGE_FORM_KEY);  
+//   form.reset();  
+// });  
+
+// // Функции для работы с локальным хранилищем  
+// function saveToLS(key, value) {  
+//   localStorage.setItem(key, JSON.stringify(value));  
+// }  
+
+// function loadFromLS(key) {  
+//   try {  
+//     return JSON.parse(localStorage.getItem(key)) || null;  
+//   } catch {  
+//     return null;  
+//   }  
+// }
+
+//*****TODO 2-var******* */
+
+// const STORAGE_FORM_KEY = 'feedback-form-state';
+
+// const form = document.querySelector('.feedback-form');
+
+// // Инициализация формы при загрузке
+// (function initForm() {
+//   const savedData = loadFromLS(STORAGE_FORM_KEY);
+//   if (savedData) {
+//     form.elements.email.value = savedData.email || '';
+//     form.elements.message.value = savedData.message || '';
+//   }
+// })();
+
+// // Обработка ввода данных
+// form.addEventListener('input', () => {
+//   const formData = new FormData(form);
+//   const data = Object.fromEntries(formData.entries());
+//   saveToLS(STORAGE_FORM_KEY, data);
+// });
+
+// // Обработка отправки формы
+// form.addEventListener('submit', e => {
+//   e.preventDefault();
+
+//   const formData = new FormData(form);
+//   const data = Object.fromEntries(formData.entries());
+
+//   if (!data.email || !data.message) {
+//     alert('Fill please all fields');
+//     return;
+//   }
+
+//   console.log(data);
+//   localStorage.removeItem(STORAGE_FORM_KEY);
+//   form.reset();
+// });
+
+// // Функции для работы с локальным хранилищем
+// function saveToLS(key, value) {
+//   localStorage.setItem(key, JSON.stringify(value));
+// }
+
+// function loadFromLS(key) {
+//   try {
+//     return JSON.parse(localStorage.getItem(key)) || null;
+//   } catch {
+//     return null;
+//   }
+// }
+
+//*****TODO 3-var******* */
+
+
+// const STORAGE_FORM_KEY = 'feedback-form-state';
+// const formData = { email: '', message: '' };
+
+// const refs = {
+//   form: document.querySelector('.feedback-form'),
+// };
+
+// // Когда пользователь вводит данные в форму,
+// // мы получаем эти данные и сохраняем в локальное хранилище
+// refs.form.addEventListener('input', e => {
+//   const email = e.currentTarget.elements.email.value.trim();
+//   const message = e.currentTarget.elements.message.value.trim();
+//   formData.email = email;
+//   formData.message = message;
+//   saveToLS(STORAGE_FORM_KEY, formData);
+// });
+
+// // Когда страница загружается,
+// // мы получаем данные из локального хранилища и
+// // заполняем ими форму
+// function initPage() {
+//   const localData = loadFromLS(STORAGE_FORM_KEY);
+//   if (localData) {
+//     refs.form.elements.email.value = localData.email || '';
+//     refs.form.elements.message.value = localData.message || '';
+//   }
+// }
+
+// initPage();
+
+// // Когда пользователь отправляет форму,
+// // мы получаем данные из формы,
+// // сохраняем их в локальное хранилище,
+// // выводим сообщение в консоли,
+// // очищаем форму
+// refs.form.addEventListener('submit', e => {
+//   e.preventDefault();
+
+
+//   const email = e.currentTarget.elements.email.value.trim();
+//   const message = e.currentTarget.elements.message.value.trim();
+
+//   if (!formData.email || !formData.message) {
+//     alert('Fill please all fields');
+//     return;
+//   }
+
+
+//   formData.email = email;
+//   formData.message = message;
+//   console.log(formData);
+//   localStorage.removeItem(STORAGE_FORM_KEY);
+//   e.target.reset();
+// });
+
+// // Функция для сохранения данных в локальное хранилище
+// function saveToLS(key, value) {
+//   const jsonData = JSON.stringify(value);
+//   localStorage.setItem(key, jsonData);
+// }
+
+// // Функция для получения данных из локального хранилища
+// function loadFromLS(key) {
+//   const body = localStorage.getItem(key);
+//   try {
+//     const data = JSON.parse(body);
+//     return data;
+//   } catch {
+//     return body;
+//   }
+// }
 
 

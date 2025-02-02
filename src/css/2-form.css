@@ -24,7 +24,7 @@ ul {
   gap: 20px;
 }
 
-.home-btn {
+/* .home-btn {
   background-color: #4E75FF;
   max-width: 95px;
   padding: 8px;
@@ -39,7 +39,7 @@ ul {
 .home-btn:hover,
 .home-btn:focus {
   background-color: #6C8CFF;
-}
+} */
 
 .feedback-form {
   display: flex;
